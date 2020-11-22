@@ -1,0 +1,21 @@
+<user name="Categorias" >
+    <user name="montaña" >
+        <user name="sierra" >
+            <user name="Empleado1" ></user>
+            <user name="Empleado2" ></user>
+            <user name="Empleado3" ></user>
+            <user name="Empleado4" ></user>
+            <user name="Empleado5" ></user>
+        </user>
+        <user name="entre lagos">
+            <user name="Empleado6" ></user>
+            <user name="Empleado7" ></user>
+            <user name="Empleado8" ></user>
+            <user name="Empleado9" ></user>
+            <user name="Empleado10" >
+                <user name="Empleado11"></user>
+                <user name="Empleado12" ></user>
+            </user>
+        </user>
+    </user>
+</user>
