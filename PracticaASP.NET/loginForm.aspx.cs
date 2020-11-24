@@ -53,9 +53,14 @@ namespace PracticaASP.NET
                 string hash = encryptpass(email.Text);
                 userAux.hash = hash;
                 Label4.Text = "Usuario no creado, hemos enviado un mail a la direccion que has especificado para la creacion del Usuario.";
-                SEND_mail(email.Text,userAux.hash);
-                Session["user"] = userAux;
-                Response.Redirect("verify.aspx");
+                try {
+                    SEND_mail(email.Text, userAux.hash);
+                    Session["user"] = userAux;
+                    Response.Redirect("verify.aspx");
+                } catch (Exception ex)
+                {
+                    Label4.Text = "Formato de mail erroneo";
+                }
             }
         }
         private void SEND_mail(string mail, string hash)
