@@ -95,5 +95,34 @@ namespace PracticaASP.NET
             msg = Convert.ToBase64String(encode);
             return msg;
         }
+        /*
+             Para obtener todas las rutas de dicha categoria debemos hacer un select * from rutas where categoria='"+tvwCategorias.SelectedNode.Text+"'
+             haremos lo mismo en la pagina de usuario con el cambio de que en esa pagina no debemos cambiar el contenido de las rutas ni el de las categorias
+             crear metodo getRutas y la clase Ruta.
+             Crear tambien la tabla rutas en la BBDD
+             Para obtener la dificultad de la ruta de 0 a 5 haremos un AVG de los campos de dificultadRuta donde la id de ruta sera el mismo de la ruta que estemos valorando
+            */
+        public List<Ruta> getRutas(String categoria)
+        {
+            List<Ruta> rutas = new List<Ruta>();
+
+            String sql = "SELECT * FROM rutas join categorias where categorias.name='"+categoria+"'";
+
+            MySqlCommand cmd = new MySqlCommand(sql, connection);
+
+            MySqlDataReader mdr = cmd.ExecuteReader();
+            while (mdr.Read())
+            {
+                Ruta r = new Ruta();
+                r.id = Convert.ToInt32(mdr[0].ToString());
+                r.Origen = mdr[1].ToString();
+                r.Destino = mdr[2].ToString();
+                r.idCategoria = Convert.ToInt32(mdr[3].ToString());
+                rutas.Add(r);
+            }
+            mdr.Close();
+
+            return rutas;
+        }
     }
 }

@@ -45,5 +45,12 @@ namespace PracticaASP.NET
                 loadTreeView(list, newNode);
             }
         }
+        protected void tvHoldingDetail_SelectedNodeChanged(object sender, EventArgs e)
+        {
+            Response.Write(tvwCategorias.SelectedNode.Text);
+            List<Ruta> rutas = bd.getRutas(tvwCategorias.SelectedNode.Text);
+
+
+        }
     }
 } 

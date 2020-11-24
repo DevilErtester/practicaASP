@@ -28,5 +28,16 @@ namespace PracticaASP.NET
         {
         }
     }
+    public class Ruta
+    {
+        public int id { get; set; }
+        public String Origen { get; set; }
+        public String Destino { get; set; }
+        public int idCategoria { get; set; }
+
+        public Ruta()
+        {
+        }
+    }
     
 }
