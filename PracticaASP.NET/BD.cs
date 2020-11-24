@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Web;
 
 namespace PracticaASP.NET
@@ -85,6 +86,14 @@ namespace PracticaASP.NET
             mdr.Close();
 
             return categories;
+        }
+        public string encrypt(string password)
+        {
+            string msg = "";
+            byte[] encode = new byte[password.Length];
+            encode = Encoding.UTF8.GetBytes(password);
+            msg = Convert.ToBase64String(encode);
+            return msg;
         }
     }
 }

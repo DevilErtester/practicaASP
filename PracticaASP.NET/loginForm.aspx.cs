@@ -26,7 +26,7 @@ namespace PracticaASP.NET
         }
         protected void Button1_Click(object sender, EventArgs e)
         {
-            string pass = encryptpass(password.Text);
+            string pass = bd.encrypt(password.Text);
             string uid = email.Text;
             Usuari user = bd.getUser(uid,pass);
 
@@ -50,7 +50,7 @@ namespace PracticaASP.NET
                     email = uid,
                     pass = pass.ToString(),
                 };
-                string hash = encryptpass(email.Text);
+                string hash = bd.encrypt(email.Text);
                 userAux.hash = hash;
                 Label4.Text = "Usuario no creado, hemos enviado un mail a la direccion que has especificado para la creacion del Usuario.";
                 try {
@@ -65,7 +65,7 @@ namespace PracticaASP.NET
         }
         private void SEND_mail(string mail, string hash)
         {
-            string url = "Este es tu codigo de verificacion: "+hash;
+            string url = "Este es tu codigo de verificacion: " + hash;
 
             var fromAddress = new MailAddress("marioproves1@gmail.com", "Mario Chaves");
             var toAddress = new MailAddress(mail, "To Name");
@@ -90,14 +90,6 @@ namespace PracticaASP.NET
             {
                 smtp.Send(message);
             }
-        }
-        public string encryptpass(string password)
-        {
-            string msg = "";
-            byte[] encode = new byte[password.Length];
-            encode = Encoding.UTF8.GetBytes(password);
-            msg = Convert.ToBase64String(encode);
-            return msg;
         }
     }
 }
