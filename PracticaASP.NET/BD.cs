@@ -32,10 +32,11 @@ namespace PracticaASP.NET
             {
                 
                 p.id = sdr[0].ToString();
-                p.username = sdr[1].ToString();
-                p.pass = sdr[2].ToString();
-                p.hash = sdr[3].ToString();
-                p.rol = sdr[4].ToString();
+                p.email = sdr[1].ToString();
+                p.nick = sdr[2].ToString();
+                p.pass = sdr[3].ToString();
+                p.hash = sdr[4].ToString();
+                p.rol = sdr[5].ToString();
                 sdr.Close();
                 return p;
             }
@@ -51,13 +52,39 @@ namespace PracticaASP.NET
         }
         public bool newUser(Usuari p)
         {
-            string sql = "insert into users (mail) values ('" + p.username + "');";
-
+            string sql = "INSERT INTO users( username, pass, hash, nickname) VALUES ('"+p.email+"','"+p.pass+"','"+p.hash+ "','" + p.nick + "');";
             MySqlCommand cmd = new MySqlCommand(sql);
             cmd.Connection = connection;
             cmd.ExecuteNonQuery();
 
             return true;
+        }
+        public List<Categoria> getCategorias()
+        {
+            List<Categoria> categories = new List<Categoria>();
+
+            String sql = "SELECT * FROM categorias order by parentid";
+
+            MySqlCommand cmd = new MySqlCommand(sql, connection);
+
+            MySqlDataReader mdr = cmd.ExecuteReader();
+            while (mdr.Read())
+            {
+                Categoria c = new Categoria();
+                c.id = Convert.ToInt32(mdr[0].ToString());
+                c.name = mdr[1].ToString();
+                try { 
+                c.ParentId = Convert.ToInt32(mdr[2].ToString());
+                }
+                catch (FormatException FE)
+                {
+                    c.ParentId = 0;
+                }
+                categories.Add(c);
+            }
+            mdr.Close();
+
+            return categories;
         }
     }
 }

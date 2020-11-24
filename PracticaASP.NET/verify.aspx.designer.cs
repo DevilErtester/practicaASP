@@ -10,7 +10,7 @@
 namespace PracticaASP.NET {
     
     
-    public partial class loginForm {
+    public partial class WebForm1 {
         
         /// <summary>
         /// Control form1.
@@ -31,13 +31,13 @@ namespace PracticaASP.NET {
         protected global::System.Web.UI.WebControls.Label Label2;
         
         /// <summary>
-        /// Control email.
+        /// Control verifyCode.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox email;
+        protected global::System.Web.UI.WebControls.TextBox verifyCode;
         
         /// <summary>
         /// Control Label1.
@@ -49,13 +49,13 @@ namespace PracticaASP.NET {
         protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
-        /// Control password.
+        /// Control nickname.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox password;
+        protected global::System.Web.UI.WebControls.TextBox nickname;
         
         /// <summary>
         /// Control Button1.

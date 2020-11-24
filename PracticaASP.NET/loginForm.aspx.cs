@@ -6,6 +6,10 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Configuration;
+using System.Security.Cryptography;
+using System.Net.Mail;
+using System.Net;
+using System.Text;
 
 namespace PracticaASP.NET
 {
@@ -18,11 +22,12 @@ namespace PracticaASP.NET
         {
             bd = new BD();
             bd.Connect();
+            
         }
         protected void Button1_Click(object sender, EventArgs e)
         {
-            string pass = password.Text;
-            string uid = username.Text;
+            string pass = encryptpass(password.Text);
+            string uid = email.Text;
             Usuari user = bd.getUser(uid,pass);
 
             if (user.id != null)
@@ -34,14 +39,60 @@ namespace PracticaASP.NET
                 }
                 else if(user.rol == "0")
                 {
-                    Session["user"] = true;
+                    Session["user"] = user;
                     Response.Redirect("user.aspx");
                 }
             }
             else
             {
-                Label4.Text = "UserId & Password Is not correct Try again..!!";
+                Usuari userAux = new Usuari
+                {
+                    email = uid,
+                    pass = pass.ToString(),
+                };
+                string hash = encryptpass(email.Text);
+                userAux.hash = hash;
+                Label4.Text = "Usuario no creado, hemos enviado un mail a la direccion que has especificado para la creacion del Usuario.";
+                SEND_mail(email.Text,userAux.hash);
+                Session["user"] = userAux;
+                Response.Redirect("verify.aspx");
             }
-        }  
+        }
+        private void SEND_mail(string mail, string hash)
+        {
+            string url = "Este es tu codigo de verificacion: "+hash;
+
+            var fromAddress = new MailAddress("marioproves1@gmail.com", "Mario Chaves");
+            var toAddress = new MailAddress(mail, "To Name");
+            const string fromPassword = "NSvH2Aubg4KzWKr";
+            const string subject = "Codigo de verificacion";
+            string body = url;
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message);
+            }
+        }
+        public string encryptpass(string password)
+        {
+            string msg = "";
+            byte[] encode = new byte[password.Length];
+            encode = Encoding.UTF8.GetBytes(password);
+            msg = Convert.ToBase64String(encode);
+            return msg;
+        }
     }
 }

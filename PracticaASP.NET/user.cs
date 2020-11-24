@@ -8,7 +8,8 @@ namespace PracticaASP.NET
     public class Usuari
     {
         public String id { get; set; }
-        public String username { get; set; }
+        public String nick { get; set; }
+        public String email { get; set; }
         public String pass { get; set; }
         public String hash { get; set; }
         public String rol { get; set; }
@@ -17,5 +18,15 @@ namespace PracticaASP.NET
         {
         }
     }
+    public class Categoria
+    {
+        public int id { get; set; }
+        public String name { get; set; }
+        public int ParentId { get; set; }
 
+        public Categoria()
+        {
+        }
+    }
+    
 }

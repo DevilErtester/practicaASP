@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="loginForm.aspx.cs" Inherits="PracticaASP.NET.loginForm" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="verify.aspx.cs" Inherits="PracticaASP.NET.WebForm1" %>
 
 <!DOCTYPE html>
 
@@ -10,10 +10,10 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <asp:Label ID="Label2" runat="server" Text="Email :"></asp:Label>    
-            <asp:TextBox ID="email" runat="server" ></asp:TextBox>
-            <asp:Label ID="Label1" runat="server" Text="Password :"></asp:Label>
-            <asp:TextBox ID="password" runat="server"  TextMode="Password"></asp:TextBox>
+            <asp:Label ID="Label2" runat="server" Text="Codigo de verificacion :"></asp:Label>    
+            <asp:TextBox ID="verifyCode" runat="server" ></asp:TextBox>
+            <asp:Label ID="Label1" runat="server" Text="Nickname:"></asp:Label>    
+            <asp:TextBox ID="nickname" runat="server" ></asp:TextBox>
             <asp:Button ID="Button1" runat="server" BorderStyle="None" OnClick="Button1_Click" Text="Log In" />
             <asp:Label ID="Label4" runat="server" Text=""></asp:Label> 
         </div>

@@ -22,44 +22,28 @@ namespace PracticaASP.NET
             }
             bd = new BD();
             bd.Connect();
-                
+            List<Categoria> categories = bd.getCategorias();
             if (!Page.IsPostBack)
             {
-                loadTreeView();
+                loadTreeView(categories,null);
             }
-            
         }
-        private String xmlPath = "carrecs.xml";
-        private void loadTreeView()
+        private void loadTreeView(IEnumerable<Categoria> list, TreeNode parentNode)
         {
-            XmlDocument xml = new XmlDocument();
-            xml.Load(MapPath(xmlPath));
-
-            tvwCategorias.Nodes.Add(new TreeNode(xml.DocumentElement.Name));
-
-            TreeNode root = new TreeNode();
-            root = tvwCategorias.Nodes[0];
-            new_node(root, xml.DocumentElement);
-        }
-
-        private void new_node(TreeNode treeNodeRoot, XmlNode xmlNodeRoot)
-        {
-            if (xmlNodeRoot.HasChildNodes)
+            var nodes = list.Where(x => parentNode == null ? x.ParentId == 0 : x.ParentId == int.Parse(parentNode.Value));
+            foreach (var node in nodes)
             {
-                foreach (XmlNode node in xmlNodeRoot.ChildNodes)
+                TreeNode newNode = new TreeNode(node.name, node.id.ToString());
+                if (parentNode == null)
                 {
-                    TreeNode tN = new TreeNode(node.Name);
-                    treeNodeRoot.Text = xmlNodeRoot.Attributes.GetNamedItem("name").InnerText;
-                    treeNodeRoot.ChildNodes.Add(tN);
-                    new_node(tN, node);
+                    tvwCategorias.Nodes.Add(newNode);
                 }
-            }
-            else
-            {
-                treeNodeRoot.Text = xmlNodeRoot.Attributes.GetNamedItem("name").InnerText;
+                else
+                {
+                    parentNode.ChildNodes.Add(newNode);
+                }
+                loadTreeView(list, newNode);
             }
         }
-
     }
-}
-//Si la categoria que le paso tiene hijos 
+} 

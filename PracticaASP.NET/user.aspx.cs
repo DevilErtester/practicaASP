@@ -3,20 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
-using System.Data;
-using System.Configuration;
-using MySql.Data.MySqlClient;
+using System.Xml;
 
 namespace PracticaASP.NET
 {
     public partial class user : System.Web.UI.Page
     {
-        string strConnString = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        private BD bd;
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+            if (Session["user"] == null)
+            {
+                Response.Redirect("loginForm.aspx");
+            }
+            else
+            {
+            }
+            bd = new BD();
+            bd.Connect();
+            List<Categoria> categories = bd.getCategorias();
+            if (!Page.IsPostBack)
+            {
+                loadTreeView(categories, null);
+            }
+        }
+        private void loadTreeView(IEnumerable<Categoria> list, TreeNode parentNode)
+        {
+            var nodes = list.Where(x => parentNode == null ? x.ParentId == 0 : x.ParentId == int.Parse(parentNode.Value));
+            foreach (var node in nodes)
+            {
+                TreeNode newNode = new TreeNode(node.name, node.id.ToString());
+                if (parentNode == null)
+                {
+                    tvwCategorias.Nodes.Add(newNode);
+                }
+                else
+                {
+                    parentNode.ChildNodes.Add(newNode);
+                }
+                loadTreeView(list, newNode);
+            }
         }
     }
 }

@@ -10,6 +10,7 @@
 <body>
     <form id="form1" runat="server">
         <div>
+            <asp:TreeView ID="tvwCategorias" runat="server" ExpandDepth="0"></asp:TreeView>
         </div>
     </form>
 </body>
