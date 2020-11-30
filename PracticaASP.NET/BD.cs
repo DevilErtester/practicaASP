@@ -101,12 +101,12 @@ namespace PracticaASP.NET
              crear metodo getRutas y la clase Ruta.
              Crear tambien la tabla rutas en la BBDD
              Para obtener la dificultad de la ruta de 0 a 5 haremos un AVG de los campos de dificultadRuta donde la id de ruta sera el mismo de la ruta que estemos valorando
-            */
+        */
         public List<Ruta> getRutas(String categoria)
         {
             List<Ruta> rutas = new List<Ruta>();
 
-            String sql = "SELECT * FROM rutas join categorias where categorias.name='"+categoria+"'";
+            String sql = "SELECT rutas.* FROM rutas right join categorias on categorias.name='" + categoria + "' where idCategoria=categorias.id ";
 
             MySqlCommand cmd = new MySqlCommand(sql, connection);
 
@@ -123,6 +123,32 @@ namespace PracticaASP.NET
             mdr.Close();
 
             return rutas;
+        }
+        public Ruta getRuta(int id)
+        {
+            Ruta r = new Ruta();
+            String sql = "SELECT * FROM rutas where id='" + id + "'";
+
+            MySqlCommand cmd = new MySqlCommand(sql, connection);
+
+            MySqlDataReader mdr = cmd.ExecuteReader();
+            
+            r.id = Convert.ToInt32(mdr[0].ToString());
+            r.Origen = mdr[1].ToString();
+            r.Destino = mdr[2].ToString();
+            r.idCategoria = Convert.ToInt32(mdr[3].ToString());
+
+            return r;
+        }
+        public bool newRuta(int categoria, String dest, String org)
+        {
+            string sql = "insert into rutas (destino,origen,idcategoria) values ('" + dest + "','" + org + "','" + categoria + "');";
+
+            MySqlCommand cmd = new MySqlCommand(sql);
+            cmd.Connection = connection;
+            cmd.ExecuteNonQuery();
+
+            return true;
         }
     }
 }

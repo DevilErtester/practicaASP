@@ -1,5 +1,8 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -9,7 +12,8 @@ using System.Xml;
 namespace PracticaASP.NET
 {
     public partial class admin : System.Web.UI.Page
-    {
+    { 
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         private BD bd;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -25,8 +29,10 @@ namespace PracticaASP.NET
             List<Categoria> categories = bd.getCategorias();
             if (!Page.IsPostBack)
             {
-                loadTreeView(categories,null);
+                loadTreeView(categories, null);
+                dropdownCat();
             }
+            
         }
         private void loadTreeView(IEnumerable<Categoria> list, TreeNode parentNode)
         {
@@ -47,10 +53,96 @@ namespace PracticaASP.NET
         }
         protected void tvHoldingDetail_SelectedNodeChanged(object sender, EventArgs e)
         {
-            Response.Write(tvwCategorias.SelectedNode.Text);
             List<Ruta> rutas = bd.getRutas(tvwCategorias.SelectedNode.Text);
+            initTaula(rutas);
+        }
+        private void initTaula(List<Ruta> ruta)
+        {
+            gvRutas.Controls.Clear();
 
+            foreach (Ruta p in ruta)
+            {
+                TableRow row = new TableRow();
 
+                TableCell cellId = new TableCell();
+                TableCell cellDesti = new TableCell();
+                TableCell cellOrigen = new TableCell();
+                TableCell cellParentId = new TableCell();
+                TableCell cellButton_delete = new TableCell();
+                TableCell cellButton_update = new TableCell();
+
+                cellId.Text = p.id.ToString();
+                cellDesti.Text = p.Destino;
+                cellOrigen.Text = p.Origen;
+                cellParentId.Text = p.idCategoria.ToString();
+
+                Button b_delete = new Button();
+                b_delete.ID = "D" + p.id;
+                b_delete.Text = "Elimina";
+                b_delete.Click += B_Click;
+                cellButton_delete.Controls.Add(b_delete);
+
+                Button b_update = new Button();
+                b_update.ID = "U" + p.id;
+                b_update.Text = "Update";
+                b_update.Click += B_update_Click;
+                cellButton_update.Controls.Add(b_update);
+
+                row.Controls.Add(cellId);
+                row.Controls.Add(cellDesti);
+                row.Controls.Add(cellOrigen);
+                row.Controls.Add(cellParentId);
+                row.Controls.Add(cellButton_delete);
+                row.Controls.Add(cellButton_update);
+
+                gvRutas.Controls.Add(row);
+            }
+        }
+        private void B_update_Click(object sender, EventArgs e)
+        {
+        }
+        private void B_Click(object sender, EventArgs e)
+        {
+        }
+        public void dropdownCat()
+        {
+            MySqlConnection con = new MySqlConnection(constr);
+            con.Open();
+
+            MySqlCommand cmd1 = new MySqlCommand("SELECT * FROM categorias where parentId IS NOT NULL");
+
+            cmd1.Connection = con;
+
+            MySqlDataAdapter sda = new MySqlDataAdapter();
+            sda.SelectCommand = cmd1;
+
+            using (DataTable dt = new DataTable())
+            {
+                sda.Fill(dt);
+                dropCategorias.DataSource = dt;
+                dropCategorias.DataBind();
+            }
+            con.Close();
+            con.Open();
+        }
+        protected void btn_Click(object sender, EventArgs e)
+        {
+            String dest = Destino.Text;
+            String org = Origen.Text;
+            int categoria = Convert.ToInt32(dropCategorias.SelectedValue);
+            bd.newRuta(categoria,dest, org);
+            foreach (Control b in newruta.Controls) 
+            {
+                TextBox c;
+                if (b is TextBox)
+                {
+                    c = b as TextBox;
+                    if (c != null)
+                    {
+                        c.Text = String.Empty;
+                    }
+                }
+            }
         }
     }
-} 
+}

@@ -29,6 +29,7 @@ namespace PracticaASP.NET
             {
                 loadTreeView(categories, null);
             }
+
         }
         private void loadTreeView(IEnumerable<Categoria> list, TreeNode parentNode)
         {
