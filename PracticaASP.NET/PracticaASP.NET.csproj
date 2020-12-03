@@ -113,6 +113,7 @@
   <ItemGroup>
     <Content Include="admin.aspx" />
     <Content Include="loginForm.aspx" />
+    <Content Include="ruta.aspx" />
     <Content Include="user.aspx" />
     <Content Include="Web.config" />
     <Content Include="verify.aspx" />
@@ -126,6 +127,13 @@
       <DependentUpon>admin.aspx</DependentUpon>
     </Compile>
     <Compile Include="BD.cs" />
+    <Compile Include="ruta.aspx.cs">
+      <DependentUpon>ruta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ruta.aspx.designer.cs">
+      <DependentUpon>ruta.aspx</DependentUpon>
+    </Compile>
     <Compile Include="user.cs" />
     <Compile Include="loginForm.aspx.cs">
       <DependentUpon>loginForm.aspx</DependentUpon>

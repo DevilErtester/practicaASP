@@ -10,7 +10,14 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <asp:TreeView ID="tvwCategorias" runat="server" ExpandDepth="0"></asp:TreeView>
+            <asp:TreeView ID="tvwCategorias" runat="server" ExpandDepth="0" OnSelectedNodeChanged="tvHoldingDetail_SelectedNodeChanged" 
+                ForeColor="Black"
+                HoverNodeStyle-ForeColor="Firebrick" SelectedNodeStyle-ForeColor="Firebrick"
+                SelectedNodeStyle-Font-UnderLine="true" NodeStyle-HorizontalPadding="5" NodeIndent="20">
+            </asp:TreeView>
+        </div>
+        <div>
+            <asp:Table runat="server" ID="gvRutas"></asp:Table>
         </div>
     </form>
 </body>

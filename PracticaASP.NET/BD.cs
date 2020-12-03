@@ -121,16 +121,16 @@ namespace PracticaASP.NET
         public Ruta getRuta(int id)
         {
             Ruta r = new Ruta();
-            String sql = "SELECT * FROM rutas where id='" + id + "'";
+            String sql = "SELECT * FROM rutas where idruta='" + id + "'";
 
             MySqlCommand cmd = new MySqlCommand(sql, connection);
 
             MySqlDataReader mdr = cmd.ExecuteReader();
-            
-            r.id = Convert.ToInt32(mdr[0].ToString());
+            mdr.Read();
+            r.id = int.Parse(mdr[0].ToString());
             r.Origen = mdr[1].ToString();
             r.Destino = mdr[2].ToString();
-            r.idCategoria = Convert.ToInt32(mdr[3].ToString());
+            r.idCategoria = int.Parse(mdr[3].ToString());
 
             return r;
         }
