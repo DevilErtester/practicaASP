@@ -31,8 +31,14 @@ namespace PracticaASP.NET
             {
                 loadTreeView(categories, null);
                 dropdownCat();
+
             }
-            
+            if (Session["rutas"] != null)
+            {
+                initTaula((List<Ruta>)Session["rutas"]);
+            }
+
+
         }
         private void loadTreeView(IEnumerable<Categoria> list, TreeNode parentNode)
         {
@@ -54,7 +60,8 @@ namespace PracticaASP.NET
         protected void tvHoldingDetail_SelectedNodeChanged(object sender, EventArgs e)
         {
             List<Ruta> rutas = bd.getRutas(tvwCategorias.SelectedNode.Text);
-            initTaula(rutas);
+            Session["rutas"] = rutas;
+            initTaula((List<Ruta>)Session["rutas"]);
         }
         private void initTaula(List<Ruta> ruta)
         {
@@ -77,15 +84,18 @@ namespace PracticaASP.NET
                 cellParentId.Text = p.idCategoria.ToString();
 
                 Button b_delete = new Button();
-                b_delete.ID = "D" + p.id;
+                b_delete.UseSubmitBehavior = false;
+                b_delete.CausesValidation = false;
+                b_delete.ID =  p.id.ToString();
                 b_delete.Text = "Elimina";
                 b_delete.Click += B_Click;
                 cellButton_delete.Controls.Add(b_delete);
 
                 Button b_update = new Button();
-                b_update.ID = "U" + p.id;
+                b_update.CausesValidation = false;
+                b_update.ID = "U" + p.id.ToString();
                 b_update.Text = "Update";
-                b_update.Click += B_update_Click;
+                b_update.OnClientClick +=new EventHandler( B_update_Click);
                 cellButton_update.Controls.Add(b_update);
 
                 row.Controls.Add(cellId);
@@ -100,9 +110,19 @@ namespace PracticaASP.NET
         }
         private void B_update_Click(object sender, EventArgs e)
         {
+            Response.Redirect("loginForm.aspx");
+            Button button = (Button)sender;
+            string rutaID = button.ID;
         }
         private void B_Click(object sender, EventArgs e)
         {
+            Button button = (Button)sender;
+            int rutaID = Convert.ToInt32(button.ID);
+            bd.deleteRuta(rutaID);
+            List<Ruta> rutas = bd.getRutas(tvwCategorias.SelectedNode.Text);
+            Session["rutas"] = rutas;
+            initTaula((List <Ruta>)Session["rutas"]);
+
         }
         public void dropdownCat()
         {
