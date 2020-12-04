@@ -29,7 +29,7 @@ namespace PracticaASP.NET
             userAux.nick = nickname.Text;
             if (verifyCode.Text == userAux.hash)
             {
-                if (bd.newUser(userAux))
+                if (bd.NewUser(userAux))
                 {
                     Session["user"] = userAux;
                     Response.Redirect("user.aspx");

@@ -24,7 +24,7 @@ namespace PracticaASP.NET
             }
             bd = new BD();
             bd.Connect();
-            List<Categoria> categories = bd.getCategorias();
+            List<Categoria> categories = bd.GetCategorias();
             if (!Page.IsPostBack)
             {
                 loadTreeView(categories, null);
@@ -85,7 +85,7 @@ namespace PracticaASP.NET
         {
             Button button = (Button)sender;
             int rutaID = Convert.ToInt32(button.ID);
-            Ruta ruta = bd.getRuta(rutaID);
+            Ruta ruta = bd.GetRuta(rutaID);
 
             Session["ruta"] = ruta;
             Response.Redirect("ruta.aspx");
@@ -109,7 +109,7 @@ namespace PracticaASP.NET
         }
         protected void tvHoldingDetail_SelectedNodeChanged(object sender, EventArgs e)
         {
-            List<Ruta> rutas = bd.getRutas(tvwCategorias.SelectedNode.Text);
+            List<Ruta> rutas = bd.GetRutas(tvwCategorias.SelectedNode.Text);
             Session["rutas"] = rutas;
             initTaula((List<Ruta>)Session["rutas"]);
         }

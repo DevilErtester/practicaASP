@@ -47,7 +47,7 @@ namespace PracticaASP.NET
         public int idRuta { get; set; }
         public String comentarioTexto { get; set; }
         public String imgPath { get; set; }
-
+        public String nick { get; set; }
         public Coment()
         {
         }

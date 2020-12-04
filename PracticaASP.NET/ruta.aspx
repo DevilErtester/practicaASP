@@ -10,7 +10,12 @@
 <body>
     <form id="form1" runat="server">
         <div>
+            <asp:GridView ID="rutaGridView" runat="server" />
         </div>
+        <div ID="divComents" runat="server">
+           
+        </div>
+            
     </form>
 </body>
 </html>

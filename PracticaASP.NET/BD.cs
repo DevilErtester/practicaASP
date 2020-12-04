@@ -22,10 +22,14 @@ namespace PracticaASP.NET
             connection = new MySqlConnection(strConnString);
             connection.Open();
         }
-        public List<Coment> getComents(int idRuta)
+        public List<Coment> GetComents(int idRuta)
         {
             List<Coment> coments = new List<Coment>(); 
-            String sql = "SELECT * FROM comentari where idRuta= '"+ idRuta+"'";
+            String sql = "SELECT comentari.*,nick " +
+                "FROM comentari " +
+                "JOIN users " +
+                "ON comentari.userID=users.userID" +
+                "WHERE idRuta="+ idRuta;
 
             MySqlCommand cmd = new MySqlCommand(sql, connection);
 
@@ -40,13 +44,26 @@ namespace PracticaASP.NET
                 c.idRuta = Convert.ToInt32(mdr[3].ToString());
                 c.comentarioTexto = mdr[4].ToString();
                 c.imgPath = mdr[5].ToString();
-              
+                c.nick = mdr[6].ToString();
                 coments.Add(c);
+                
             }
             mdr.Close();
             return coments;
         }
-        public Usuari getUser(string user, string pass)
+        public String GetNick(int idUser)
+        {
+            String nick;
+            String sql = "SELECT nick FROM users where userid=" + idUser;
+
+            MySqlCommand cmd = new MySqlCommand(sql, connection);
+
+            MySqlDataReader mdr = cmd.ExecuteReader();
+            mdr.Read();
+            nick = mdr[0].ToString();
+            return nick;
+        }
+        public Usuari GetUser(string user, string pass)
         {
             String sql = "select * from users where username='" + user + "' and pass='" + pass + "'";
             Usuari p = null;
@@ -55,7 +72,6 @@ namespace PracticaASP.NET
             p = new Usuari();
             if (sdr.Read())
             {
-                
                 p.id = sdr[0].ToString();
                 p.email = sdr[1].ToString();
                 p.nick = sdr[2].ToString();
@@ -67,15 +83,12 @@ namespace PracticaASP.NET
             }
             else
             {
-
                 p.id = null;
                 sdr.Close();
                 return p;
             }
-            
-        
         }
-        public bool newUser(Usuari p)
+        public bool NewUser(Usuari p)
         {
             string sql = "INSERT INTO users( username, pass, hash, nickname) VALUES ('"+p.email+"','"+p.pass+"','"+p.hash+ "','" + p.nick + "');";
             MySqlCommand cmd = new MySqlCommand(sql);
@@ -84,7 +97,7 @@ namespace PracticaASP.NET
 
             return true;
         }
-        public List<Categoria> getCategorias()
+        public List<Categoria> GetCategorias()
         {
             List<Categoria> categories = new List<Categoria>();
 
@@ -111,7 +124,7 @@ namespace PracticaASP.NET
 
             return categories;
         }
-        public string encrypt(string password)
+        public string Encrypt(string password)
         {
             string msg = "";
             byte[] encode = new byte[password.Length];
@@ -120,7 +133,7 @@ namespace PracticaASP.NET
             return msg;
         }
 
-        public List<Ruta> getRutas(String categoria)
+        public List<Ruta> GetRutas(String categoria)
         {
             List<Ruta> rutas = new List<Ruta>();
 
@@ -142,7 +155,7 @@ namespace PracticaASP.NET
 
             return rutas;
         }
-        public Ruta getRuta(int id)
+        public Ruta GetRuta(int id)
         {
             Ruta r = new Ruta();
             String sql = "SELECT * FROM rutas where idruta='" + id + "'";
@@ -158,7 +171,7 @@ namespace PracticaASP.NET
 
             return r;
         }
-        public bool newRuta(int categoria, String dest, String org)
+        public bool NewRuta(int categoria, String dest, String org)
         {
             string sql = "insert into rutas (destino,origen,idcategoria) values ('" + dest + "','" + org + "','" + categoria + "');";
 
@@ -168,7 +181,7 @@ namespace PracticaASP.NET
 
             return true;
         }
-        public bool deleteRuta(int ID)
+        public bool DeleteRuta(int ID)
         {
             string sql = "DELETE FROM rutas WHERE idRuta='" + ID + "'";
             MySqlCommand cmd = new MySqlCommand(sql);

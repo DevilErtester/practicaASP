@@ -25,8 +25,27 @@ namespace PracticaASP.NET
             }
             bd = new BD();
             bd.Connect();
+            Ruta ruta = (Ruta)Session["ruta"];
 
-
+            List<Coment> coments = bd.GetComents(ruta.id);
+            string html = "";
+            int i = 0;
+            foreach (Coment c in coments)
+            {
+                html += "<div>";
+                html += "<h4>";
+                html += c.nick=bd.GetNick(c.userID) + ":";
+                html += "</h4>";
+                html += "<p> ";
+                html +=  c.comentarioTexto;
+                html += "</p>";
+               
+                html += "<br />";
+                html += "</div>";
+               
+            }
+            divComents.InnerHtml = html;
+           
         }
     }
 }

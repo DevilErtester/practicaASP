@@ -26,9 +26,9 @@ namespace PracticaASP.NET
         }
         protected void Button1_Click(object sender, EventArgs e)
         {
-            string pass = bd.encrypt(password.Text);
+            string pass = bd.Encrypt(password.Text);
             string uid = email.Text;
-            Usuari user = bd.getUser(uid,pass);
+            Usuari user = bd.GetUser(uid,pass);
 
             if (user.id != null)
             {
@@ -50,7 +50,7 @@ namespace PracticaASP.NET
                     email = uid,
                     pass = pass.ToString(),
                 };
-                string hash = bd.encrypt(email.Text);
+                string hash = bd.Encrypt(email.Text);
                 userAux.hash = hash;
                 Label4.Text = "Usuario no creado, hemos enviado un mail a la direccion que has especificado para la creacion del Usuario.";
                 try {

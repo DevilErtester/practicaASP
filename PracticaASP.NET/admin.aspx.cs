@@ -26,7 +26,7 @@ namespace PracticaASP.NET
             }
             bd = new BD();
             bd.Connect();
-            List<Categoria> categories = bd.getCategorias();
+            List<Categoria> categories = bd.GetCategorias();
             if (!Page.IsPostBack)
             {
                 loadTreeView(categories, null);
@@ -59,7 +59,7 @@ namespace PracticaASP.NET
         }
         protected void tvHoldingDetail_SelectedNodeChanged(object sender, EventArgs e)
         {
-            List<Ruta> rutas = bd.getRutas(tvwCategorias.SelectedNode.Text);
+            List<Ruta> rutas = bd.GetRutas(tvwCategorias.SelectedNode.Text);
             Session["rutas"] = rutas;
             initTaula((List<Ruta>)Session["rutas"]);
         }
@@ -118,8 +118,8 @@ namespace PracticaASP.NET
         {
             Button button = (Button)sender;
             int rutaID = Convert.ToInt32(button.ID);
-            bd.deleteRuta(rutaID);
-            List<Ruta> rutas = bd.getRutas(tvwCategorias.SelectedNode.Text);
+            bd.DeleteRuta(rutaID);
+            List<Ruta> rutas = bd.GetRutas(tvwCategorias.SelectedNode.Text);
             Session["rutas"] = rutas;
             initTaula((List <Ruta>)Session["rutas"]);
 
@@ -150,7 +150,7 @@ namespace PracticaASP.NET
             String dest = Destino.Text;
             String org = Origen.Text;
             int categoria = Convert.ToInt32(dropCategorias.SelectedValue);
-            bd.newRuta(categoria,dest, org);
+            bd.NewRuta(categoria,dest, org);
             foreach (Control b in newruta.Controls) 
             {
                 TextBox c;
