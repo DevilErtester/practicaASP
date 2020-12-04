@@ -22,6 +22,30 @@ namespace PracticaASP.NET
             connection = new MySqlConnection(strConnString);
             connection.Open();
         }
+        public List<Coment> getComents(int idRuta)
+        {
+            List<Coment> coments = new List<Coment>(); 
+            String sql = "SELECT * FROM comentari where idRuta= '"+ idRuta+"'";
+
+            MySqlCommand cmd = new MySqlCommand(sql, connection);
+
+            MySqlDataReader mdr = cmd.ExecuteReader();
+
+            while (mdr.Read())
+            {
+                Coment c = new Coment();
+                c.comentariID = Convert.ToInt32(mdr[0].ToString());
+                c.data = mdr[1].ToString();            
+                c.userID = Convert.ToInt32(mdr[2].ToString());
+                c.idRuta = Convert.ToInt32(mdr[3].ToString());
+                c.comentarioTexto = mdr[4].ToString();
+                c.imgPath = mdr[5].ToString();
+              
+                coments.Add(c);
+            }
+            mdr.Close();
+            return coments;
+        }
         public Usuari getUser(string user, string pass)
         {
             String sql = "select * from users where username='" + user + "' and pass='" + pass + "'";

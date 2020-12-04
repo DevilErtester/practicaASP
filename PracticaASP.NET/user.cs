@@ -39,5 +39,18 @@ namespace PracticaASP.NET
         {
         }
     }
-    
+    public class Coment
+    {
+        public int comentariID { get; set; }
+        public String data { get; set; }
+        public int userID { get; set; }
+        public int idRuta { get; set; }
+        public String comentarioTexto { get; set; }
+        public String imgPath { get; set; }
+
+        public Coment()
+        {
+        }
+    }
+
 }

@@ -86,6 +86,7 @@ namespace PracticaASP.NET
             Button button = (Button)sender;
             int rutaID = Convert.ToInt32(button.ID);
             Ruta ruta = bd.getRuta(rutaID);
+
             Session["ruta"] = ruta;
             Response.Redirect("ruta.aspx");
         }
