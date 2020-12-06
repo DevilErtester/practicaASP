@@ -24,12 +24,8 @@ namespace PracticaASP.NET
         }
         public List<Coment> GetComents(int idRuta)
         {
-            List<Coment> coments = new List<Coment>(); 
-            String sql = "SELECT comentari.*,nick " +
-                "FROM comentari " +
-                "JOIN users " +
-                "ON comentari.userID=users.userID" +
-                "WHERE idRuta="+ idRuta;
+            List<Coment> coments = new List<Coment>();
+            String sql = "SELECT comentari.*,nick FROM comentari JOIN users ON comentari.userID=users.userID WHERE idRuta='" + idRuta + "'";
 
             MySqlCommand cmd = new MySqlCommand(sql, connection);
 
@@ -39,17 +35,32 @@ namespace PracticaASP.NET
             {
                 Coment c = new Coment();
                 c.comentariID = Convert.ToInt32(mdr[0].ToString());
-                c.data = mdr[1].ToString();            
+                c.data = mdr[1].ToString();
                 c.userID = Convert.ToInt32(mdr[2].ToString());
                 c.idRuta = Convert.ToInt32(mdr[3].ToString());
                 c.comentarioTexto = mdr[4].ToString();
                 c.imgPath = mdr[5].ToString();
                 c.nick = mdr[6].ToString();
                 coments.Add(c);
-                
+
             }
             mdr.Close();
             return coments;
+        }
+        public void NewComent(Coment c)
+        {
+            string sql;
+            if (c.imgPath != null)
+            {
+                sql = "INSERT INTO comentari(data, userID, idRuta, comentarioTexto, imgpath) VALUES ('" + c.data + "','" + c.userID + "','" + c.idRuta + "','" + c.comentarioTexto + "','" + c.imgPath + "')";
+            }
+            else
+            {
+                sql = "INSERT INTO comentari(data, userID, idRuta, comentarioTexto) VALUES ('" + c.data + "','" + c.userID + "','" + c.idRuta + "','" + c.comentarioTexto + "')";
+            }
+            MySqlCommand cmd = new MySqlCommand(sql);
+            cmd.Connection = connection;
+            cmd.ExecuteNonQuery();
         }
         public String GetNick(int idUser)
         {
@@ -61,6 +72,7 @@ namespace PracticaASP.NET
             MySqlDataReader mdr = cmd.ExecuteReader();
             mdr.Read();
             nick = mdr[0].ToString();
+            mdr.Close();
             return nick;
         }
         public Usuari GetUser(string user, string pass)
@@ -114,7 +126,7 @@ namespace PracticaASP.NET
                 try { 
                 c.ParentId = Convert.ToInt32(mdr[2].ToString());
                 }
-                catch (FormatException FE)
+                catch (FormatException)
                 {
                     c.ParentId = 0;
                 }
@@ -168,7 +180,7 @@ namespace PracticaASP.NET
             r.Origen = mdr[1].ToString();
             r.Destino = mdr[2].ToString();
             r.idCategoria = int.Parse(mdr[3].ToString());
-
+            mdr.Close();
             return r;
         }
         public bool NewRuta(int categoria, String dest, String org)

@@ -12,10 +12,15 @@
         <div>
             <asp:GridView ID="rutaGridView" runat="server" />
         </div>
-        <div ID="divComents" runat="server">
+        <div id="divComents" runat="server">
            
         </div>
-            
+        <div id="newComent" runat="server">
+            <textarea runat="server" id="comment" form="form1" cols="20" name="S1" rows="1">Enter text here...</textarea>
+            <asp:FileUpload ID= "Uploader" runat = "server" />
+            <asp:Button UseSubmitBehavior="true" ID="newComentClick" Text="Comentar" runat="server" OnClick="newComent_Click" />
+            <asp:Label ID="labelError" runat="server" />
+        </div>
     </form>
 </body>
 </html>
