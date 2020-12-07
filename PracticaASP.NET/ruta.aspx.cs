@@ -42,7 +42,7 @@ namespace PracticaASP.NET
                 html += "</p>";
                 if (c.imgPath!="")
                 {
-                    html += "<img src='img/" + c.imgPath + "' alt='Not Found' />";
+                    html += "<img src='img/" + c.imgPath + "' alt='Not Found' style='width:200px; heigth:200px'/>";
                 }
                 html += "<br />";
                 html += "</div>";
@@ -106,6 +106,7 @@ namespace PracticaASP.NET
             c.userID = int.Parse(user.id);
             if(Page.IsPostBack)
             bd.NewComent(c);
+            bd.NewRating(ruta.id, int.Parse(user.id), int.Parse(rating.Text));
             Response.Redirect(Request.Url.AbsoluteUri);
         }
     }

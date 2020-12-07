@@ -43,17 +43,19 @@ namespace PracticaASP.NET
             {
                 TableRow row = new TableRow();
 
-                TableCell cellId = new TableCell();
+                
                 TableCell cellDesti = new TableCell();
                 TableCell cellOrigen = new TableCell();
-                TableCell cellParentId = new TableCell();
+               
+                TableCell cellDif = new TableCell();
                 TableCell cellButton_delete = new TableCell();
-                TableCell cellButton_update = new TableCell();
+                
 
-                cellId.Text = p.id.ToString();
+                
                 cellDesti.Text = p.Destino;
                 cellOrigen.Text = p.Origen;
-                cellParentId.Text = p.idCategoria.ToString();
+                
+                cellDif.Text = "Dificultat: "+ bd.GetRatingRuta(p.id).ToString();
 
                 Button b_delete = new Button();
                 b_delete.UseSubmitBehavior = false;
@@ -65,13 +67,13 @@ namespace PracticaASP.NET
 
                 
 
-                row.Controls.Add(cellId);
+                
                 row.Controls.Add(cellDesti);
                 row.Controls.Add(cellOrigen);
-                row.Controls.Add(cellParentId);
+               
+                row.Controls.Add(cellDif);
                 row.Controls.Add(cellButton_delete);
-                row.Controls.Add(cellButton_update);
-
+               
                 gvRutas.Controls.Add(row);
             }
         }

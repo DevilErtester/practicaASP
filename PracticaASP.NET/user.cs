@@ -34,7 +34,7 @@ namespace PracticaASP.NET
         public String Origen { get; set; }
         public String Destino { get; set; }
         public int idCategoria { get; set; }
-
+        public float dif { get; set; }
         public Ruta()
         {
         }

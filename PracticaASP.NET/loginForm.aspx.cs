@@ -20,6 +20,7 @@ namespace PracticaASP.NET
         private BD bd;
         protected void Page_Load(object sender, EventArgs e)
         {
+            Session["ruta"] = null;
             bd = new BD();
             bd.Connect();
             

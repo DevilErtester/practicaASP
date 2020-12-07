@@ -33,14 +33,16 @@ namespace PracticaASP.NET
 
             while (mdr.Read())
             {
-                Coment c = new Coment();
-                c.comentariID = Convert.ToInt32(mdr[0].ToString());
-                c.data = mdr[1].ToString();
-                c.userID = Convert.ToInt32(mdr[2].ToString());
-                c.idRuta = Convert.ToInt32(mdr[3].ToString());
-                c.comentarioTexto = mdr[4].ToString();
-                c.imgPath = mdr[5].ToString();
-                c.nick = mdr[6].ToString();
+                Coment c = new Coment
+                {
+                    comentariID = Convert.ToInt32(mdr[0].ToString()),
+                    data = mdr[1].ToString(),
+                    userID = Convert.ToInt32(mdr[2].ToString()),
+                    idRuta = Convert.ToInt32(mdr[3].ToString()),
+                    comentarioTexto = mdr[4].ToString(),
+                    imgPath = mdr[5].ToString(),
+                    nick = mdr[6].ToString()
+                };
                 coments.Add(c);
 
             }
@@ -58,8 +60,10 @@ namespace PracticaASP.NET
             {
                 sql = "INSERT INTO comentari(data, userID, idRuta, comentarioTexto) VALUES ('" + c.data + "','" + c.userID + "','" + c.idRuta + "','" + c.comentarioTexto + "')";
             }
-            MySqlCommand cmd = new MySqlCommand(sql);
-            cmd.Connection = connection;
+            MySqlCommand cmd = new MySqlCommand(sql)
+            {
+                Connection = connection
+            };
             cmd.ExecuteNonQuery();
         }
         public String GetNick(int idUser)
@@ -103,8 +107,10 @@ namespace PracticaASP.NET
         public bool NewUser(Usuari p)
         {
             string sql = "INSERT INTO users( username, pass, hash, nickname) VALUES ('"+p.email+"','"+p.pass+"','"+p.hash+ "','" + p.nick + "');";
-            MySqlCommand cmd = new MySqlCommand(sql);
-            cmd.Connection = connection;
+            MySqlCommand cmd = new MySqlCommand(sql)
+            {
+                Connection = connection
+            };
             cmd.ExecuteNonQuery();
 
             return true;
@@ -120,9 +126,11 @@ namespace PracticaASP.NET
             MySqlDataReader mdr = cmd.ExecuteReader();
             while (mdr.Read())
             {
-                Categoria c = new Categoria();
-                c.id = Convert.ToInt32(mdr[0].ToString());
-                c.name = mdr[1].ToString();
+                Categoria c = new Categoria
+                {
+                    id = Convert.ToInt32(mdr[0].ToString()),
+                    name = mdr[1].ToString()
+                };
                 try { 
                 c.ParentId = Convert.ToInt32(mdr[2].ToString());
                 }
@@ -156,16 +164,44 @@ namespace PracticaASP.NET
             MySqlDataReader mdr = cmd.ExecuteReader();
             while (mdr.Read())
             {
-                Ruta r = new Ruta();
-                r.id = Convert.ToInt32(mdr[0].ToString());
-                r.Origen = mdr[1].ToString();
-                r.Destino = mdr[2].ToString();
-                r.idCategoria = Convert.ToInt32(mdr[3].ToString());
+                Ruta r = new Ruta
+                {
+                    id = Convert.ToInt32(mdr[0].ToString()),
+                    Origen = mdr[1].ToString(),
+                    Destino = mdr[2].ToString(),
+                    idCategoria = Convert.ToInt32(mdr[3].ToString())
+                };
                 rutas.Add(r);
             }
             mdr.Close();
 
             return rutas;
+        }
+        public bool NewRating(int idRuta, int idUser,int dif)
+        {
+            string sql = "INSERT INTO ratingruta(idRuta, idUser, dificultad) VALUES ('" + idRuta +"','" + idUser + "','" + dif + "');";
+            MySqlCommand cmd = new MySqlCommand(sql)
+            {
+                Connection = connection
+            };
+            cmd.ExecuteNonQuery();
+
+            return true;
+        }
+        public float GetRatingRuta(int IdRuta)
+        {
+            String sql = "SELECT avg(dificultad) FROM ratingruta where idRuta= '"+ IdRuta +"' group by idruta";
+
+            MySqlCommand cmd = new MySqlCommand(sql, connection);
+
+            MySqlDataReader mdr = cmd.ExecuteReader();
+            float rating=0;
+            while (mdr.Read()) {
+                rating = float.Parse(mdr[0].ToString());
+            }
+
+            mdr.Close();
+            return rating;
         }
         public Ruta GetRuta(int id)
         {
@@ -187,8 +223,10 @@ namespace PracticaASP.NET
         {
             string sql = "insert into rutas (destino,origen,idcategoria) values ('" + dest + "','" + org + "','" + categoria + "');";
 
-            MySqlCommand cmd = new MySqlCommand(sql);
-            cmd.Connection = connection;
+            MySqlCommand cmd = new MySqlCommand(sql)
+            {
+                Connection = connection
+            };
             cmd.ExecuteNonQuery();
 
             return true;
@@ -196,8 +234,10 @@ namespace PracticaASP.NET
         public bool DeleteRuta(int ID)
         {
             string sql = "DELETE FROM rutas WHERE idRuta='" + ID + "'";
-            MySqlCommand cmd = new MySqlCommand(sql);
-            cmd.Connection = connection;
+            MySqlCommand cmd = new MySqlCommand(sql)
+            {
+                Connection = connection
+            };
             cmd.ExecuteNonQuery();
             return true;
         }
